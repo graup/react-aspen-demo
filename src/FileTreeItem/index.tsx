@@ -19,6 +19,7 @@ interface IItemRendererXProps {
     dndService: DragAndDropService
     onClick: (ev: React.MouseEvent, item: FileEntry | Directory, type: ItemType) => void
     onContextMenu: (ev: React.MouseEvent, item: FileEntry | Directory, type: ItemType) => void
+    onDelete: (ev: React.MouseEvent, item: FileEntry | Directory, type: ItemType) => void
 }
 
 // DO NOT EXTEND FROM PureComponent!!! You might miss critical changes made deep within `item` prop
@@ -94,6 +95,7 @@ export class FileTreeItem extends React.Component<IItemRendererXProps & IItemRen
                             : (item as FileEntry).fileName
                         }
                     </span>
+                    <span className='delete' onClick={this.handleDelete} style={{cursor: 'pointer'}}>[X]</span>
                 </span>
             </div>)
     }
@@ -194,6 +196,13 @@ export class FileTreeItem extends React.Component<IItemRendererXProps & IItemRen
         const { item, itemType, dndService } = this.props
         if (itemType === ItemType.File || itemType === ItemType.Directory) {
             dndService.handleDragOver(ev)
+        }
+    }
+
+    private handleDelete = (ev: React.MouseEvent) => {
+        const { item, itemType, onDelete } = this.props
+        if (itemType === ItemType.File || itemType === ItemType.Directory) {
+            onDelete(ev, item as FileEntry, itemType);
         }
     }
 }

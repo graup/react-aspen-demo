@@ -83,6 +83,7 @@ export class FileTreeX extends React.Component<IFileTreeXProps> {
                     decorations={decorations.getDecorations(props.item as any)}
                     dndService={this.dndService}
                     onClick={this.handleItemClicked}
+                    onDelete={this.handleDeleteItem}
                     onContextMenu={this.handleItemCtxMenu} />}
             </FileTree>
         </div>
@@ -302,6 +303,14 @@ export class FileTreeX extends React.Component<IFileTreeXProps> {
 
     private handleKeyDown = (ev: React.KeyboardEvent) => {
         return this.keyboardHotkeys.handleKeyDown(ev)
+    }
+
+    private handleDeleteItem = (ev: React.MouseEvent, item: FileOrDir) => {
+        ev.stopPropagation()
+        this.props.model.root.inotify({
+            type: WatchEvent.Removed,
+            path: item.path,
+        });
     }
 }
 
