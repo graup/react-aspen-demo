@@ -311,7 +311,10 @@ export class FileTreeX extends React.Component<IFileTreeXProps> {
             type: WatchEvent.Removed,
             path: item.path,
         });
-        this.forceUpdate();
+        setTimeout(() => {
+            // Check if this works
+            this.forceUpdate();
+        }, 100);
     }
 }
 
